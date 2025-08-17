@@ -10,17 +10,18 @@ html, body {
     min-height:100%;
     font-family: Arial, sans-serif;
     color:white;
-    overflow-x:hidden;
 }
 .background {
     position:fixed;
-    top:0; left:0;
-    width:100%; height:100%;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
     z-index:-1;
     background:url('absolute_roster_card_1.jpg') no-repeat center center;
     background-size:cover;
 }
-@media only screen and (max-width:768px) {
+@media only screen and (max-width:1440px) {
     .background {
         background:url('absolute_roster_card_0.jpg') no-repeat center center;
         background-size:cover;
@@ -30,29 +31,28 @@ html, body {
     position:relative;
     padding:20px;
     width:100%;
-    min-height:100%;
-    overflow-y:auto;
+    box-sizing:border-box;
 }
 h1 { text-align:center; margin-top:20px; }
 ul { list-style:none; padding:0; margin:20px; }
 li {
-    display:flex; justify-content:flex-start; align-items:center;
-    margin:5px 0; padding:10px; border-radius:8px;
-    background: rgba(0,0,0,0.3); /* semi-transparent container */
-    cursor:pointer;
+    margin:5px 0;
 }
-.chapter-text {
-    display:flex; justify-content:space-between; width:100%;
+.chapter-box {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:10px;
+    border-radius:8px;
+    background: rgba(0,0,0,0.3);  /* see-through container */
 }
-li.unchecked span:first-child,
-li.unchecked span:first-child a,
-li.unchecked a {
+li.unchecked .chapter-box span,
+li.unchecked .chapter-box a {
     color:white !important;
     text-decoration:none !important;
 }
-li.checked span:first-child,
-li.checked span:first-child a,
-li.checked a {
+li.checked .chapter-box span,
+li.checked .chapter-box a {
     color:black !important;
     text-decoration:line-through !important;
 }
@@ -61,9 +61,8 @@ li.checked a {
 .filters button { margin:0 10px; padding:5px 10px; cursor:pointer; }
 @media only screen and (max-width:768px) {
     h1 { font-size:2em; }
-    li { flex-direction:column; align-items:flex-start; padding:10px; }
-    .chapter-text { flex-direction:column; }
-    .date { font-size:0.8em; margin-left:0; margin-top:5px; }
+    .chapter-box { flex-direction:column; align-items:flex-start; }
+    .date { font-size:0.7em; margin-left:0; margin-top:5px; }
 }
 </style>
 </head>
@@ -79,422 +78,425 @@ li.checked a {
 <ul id="chapters">
         <li id="chapter-0" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(0)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-batman-2024/1" target="_blank">Absolute Batman (2024-) #1</a></span>
+            <div class="chapter-box">
+                <span>Absolute Batman (2024-) #1</span>
                 <span class="date">09 Oct. 2024</span>
             </div>
         </li>
         
         <li id="chapter-1" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(1)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-superman-2024/previews" target="_blank">Absolute Superman (2024-) #Previews</a></span>
+            <div class="chapter-box">
+                <span>Absolute Superman (2024-) #Previews</span>
                 <span class="date">20 Oct. 2024</span>
             </div>
         </li>
         
         <li id="chapter-2" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(2)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-wonder-woman-2024/1" target="_blank">Absolute Wonder Woman (2024-) #1</a></span>
+            <div class="chapter-box">
+                <span>Absolute Wonder Woman (2024-) #1</span>
                 <span class="date">23 Oct. 2024</span>
             </div>
         </li>
         
         <li id="chapter-3" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(3)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-superman-2024/1" target="_blank">Absolute Superman (2024-) #1</a></span>
+            <div class="chapter-box">
+                <span>Absolute Superman (2024-) #1</span>
                 <span class="date">06 Nov. 2024</span>
             </div>
         </li>
         
         <li id="chapter-4" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(4)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-batman-2024/2" target="_blank">Absolute Batman (2024-) #2</a></span>
+            <div class="chapter-box">
+                <span>Absolute Batman (2024-) #2</span>
                 <span class="date">13 Nov. 2024</span>
             </div>
         </li>
         
         <li id="chapter-5" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(5)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-wonder-woman-2024/2" target="_blank">Absolute Wonder Woman (2024-) #2</a></span>
+            <div class="chapter-box">
+                <span>Absolute Wonder Woman (2024-) #2</span>
                 <span class="date">27 Nov. 2024</span>
             </div>
         </li>
         
         <li id="chapter-6" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(6)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-superman-2024/2" target="_blank">Absolute Superman (2024-) #2</a></span>
+            <div class="chapter-box">
+                <span>Absolute Superman (2024-) #2</span>
                 <span class="date">04 Dec. 2024</span>
             </div>
         </li>
         
         <li id="chapter-7" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(7)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-batman-2024/1.1" target="_blank">Absolute Batman (2024-) #1 Noir Edition</a></span>
+            <div class="chapter-box">
+                <span>Absolute Batman (2024-) #1 Noir Edition</span>
                 <span class="date">12 Dec. 2024</span>
             </div>
         </li>
         
         <li id="chapter-8" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(8)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-batman-2024/3" target="_blank">Absolute Batman (2024-) #3</a></span>
+            <div class="chapter-box">
+                <span>Absolute Batman (2024-) #3</span>
                 <span class="date">18 Dec. 2024</span>
             </div>
         </li>
         
         <li id="chapter-9" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(9)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-wonder-woman-2024/1.1" target="_blank">Absolute Wonder Woman (2024-) #1 Noir Edition</a></span>
+            <div class="chapter-box">
+                <span>Absolute Wonder Woman (2024-) #1 Noir Edition</span>
                 <span class="date">25 Dec. 2024</span>
             </div>
         </li>
         
         <li id="chapter-10" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(10)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-wonder-woman-2024/3" target="_blank">Absolute Wonder Woman (2024-) #3</a></span>
+            <div class="chapter-box">
+                <span>Absolute Wonder Woman (2024-) #3</span>
                 <span class="date">26 Dec. 2024</span>
             </div>
         </li>
         
         <li id="chapter-11" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(11)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-superman-2024/3" target="_blank">Absolute Superman (2024-) #3</a></span>
+            <div class="chapter-box">
+                <span>Absolute Superman (2024-) #3</span>
                 <span class="date">02 Jan. 2025</span>
             </div>
         </li>
         
         <li id="chapter-12" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(12)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-batman-2024/4" target="_blank">Absolute Batman (2024-) #4</a></span>
+            <div class="chapter-box">
+                <span>Absolute Batman (2024-) #4</span>
                 <span class="date">09 Jan. 2025</span>
             </div>
         </li>
         
         <li id="chapter-13" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(13)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-wonder-woman-2024/4" target="_blank">Absolute Wonder Woman (2024-) #4</a></span>
+            <div class="chapter-box">
+                <span>Absolute Wonder Woman (2024-) #4</span>
                 <span class="date">22 Jan. 2025</span>
             </div>
         </li>
         
         <li id="chapter-14" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(14)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-superman-2024/4" target="_blank">Absolute Superman (2024-) #4</a></span>
+            <div class="chapter-box">
+                <span>Absolute Superman (2024-) #4</span>
                 <span class="date">05 Feb. 2025</span>
             </div>
         </li>
         
         <li id="chapter-15" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(15)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-batman-2024/5" target="_blank">Absolute Batman (2024-) #5</a></span>
+            <div class="chapter-box">
+                <span>Absolute Batman (2024-) #5</span>
                 <span class="date">13 Feb. 2025</span>
             </div>
         </li>
         
         <li id="chapter-16" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(16)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-wonder-woman-2024/5" target="_blank">Absolute Wonder Woman (2024-) #5</a></span>
+            <div class="chapter-box">
+                <span>Absolute Wonder Woman (2024-) #5</span>
                 <span class="date">26 Feb. 2025</span>
             </div>
         </li>
         
         <li id="chapter-17" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(17)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-superman-2024/5" target="_blank">Absolute Superman (2024-) #5</a></span>
+            <div class="chapter-box">
+                <span>Absolute Superman (2024-) #5</span>
                 <span class="date">12 Mar. 2025</span>
             </div>
         </li>
         
         <li id="chapter-18" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(18)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-batman-2024/6" target="_blank">Absolute Batman (2024-) #6</a></span>
+            <div class="chapter-box">
+                <span>Absolute Batman (2024-) #6</span>
                 <span class="date">19 Mar. 2025</span>
             </div>
         </li>
         
         <li id="chapter-19" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(19)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-flash-2025/1" target="_blank">Absolute Flash (2025-) #1</a></span>
+            <div class="chapter-box">
+                <span>Absolute Flash (2025-) #1</span>
                 <span class="date">19 Mar. 2025</span>
             </div>
         </li>
         
         <li id="chapter-20" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(20)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-wonder-woman-2024/6" target="_blank">Absolute Wonder Woman (2024-) #6</a></span>
+            <div class="chapter-box">
+                <span>Absolute Wonder Woman (2024-) #6</span>
                 <span class="date">26 Mar. 2025</span>
             </div>
         </li>
         
         <li id="chapter-21" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(21)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-martian-manhunter-2025/1" target="_blank">Absolute Martian Manhunter (2025-) #1</a></span>
+            <div class="chapter-box">
+                <span>Absolute Martian Manhunter (2025-) #1</span>
                 <span class="date">26 Mar. 2025</span>
             </div>
         </li>
         
         <li id="chapter-22" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(22)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-martian-manhunter-2025/1.1" target="_blank">Absolute Martian Manhunter (2025-) #1 - Martianvision Activated</a></span>
+            <div class="chapter-box">
+                <span>Absolute Martian Manhunter (2025-) #1 - Martianvision Activated</span>
                 <span class="date">29 Mar. 2025</span>
             </div>
         </li>
         
         <li id="chapter-23" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(23)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-superman-2024/6" target="_blank">Absolute Superman (2024-) #6</a></span>
+            <div class="chapter-box">
+                <span>Absolute Superman (2024-) #6</span>
                 <span class="date">02 Apr. 2025</span>
             </div>
         </li>
         
         <li id="chapter-24" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(24)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-green-lantern-2025/1" target="_blank">Absolute Green Lantern (2025-) #1</a></span>
+            <div class="chapter-box">
+                <span>Absolute Green Lantern (2025-) #1</span>
                 <span class="date">02 Apr. 2025</span>
             </div>
         </li>
         
         <li id="chapter-25" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(25)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-batman-2024/7" target="_blank">Absolute Batman (2024-) #7</a></span>
+            <div class="chapter-box">
+                <span>Absolute Batman (2024-) #7</span>
                 <span class="date">09 Apr. 2025</span>
             </div>
         </li>
         
         <li id="chapter-26" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(26)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-flash-2025/2" target="_blank">Absolute Flash (2025-) #2</a></span>
+            <div class="chapter-box">
+                <span>Absolute Flash (2025-) #2</span>
                 <span class="date">16 Apr. 2025</span>
             </div>
         </li>
         
         <li id="chapter-27" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(27)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-wonder-woman-2024/7" target="_blank">Absolute Wonder Woman (2024-) #7</a></span>
+            <div class="chapter-box">
+                <span>Absolute Wonder Woman (2024-) #7</span>
                 <span class="date">23 Apr. 2025</span>
             </div>
         </li>
         
         <li id="chapter-28" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(28)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-martian-manhunter-2025/2" target="_blank">Absolute Martian Manhunter (2025-) #2</a></span>
+            <div class="chapter-box">
+                <span>Absolute Martian Manhunter (2025-) #2</span>
                 <span class="date">23 Apr. 2025</span>
             </div>
         </li>
         
         <li id="chapter-29" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(29)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-superman-2024/7" target="_blank">Absolute Superman (2024-) #7</a></span>
+            <div class="chapter-box">
+                <span>Absolute Superman (2024-) #7</span>
                 <span class="date">07 May. 2025</span>
             </div>
         </li>
         
         <li id="chapter-30" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(30)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-green-lantern-2025/2" target="_blank">Absolute Green Lantern (2025-) #2</a></span>
+            <div class="chapter-box">
+                <span>Absolute Green Lantern (2025-) #2</span>
                 <span class="date">07 May. 2025</span>
             </div>
         </li>
         
         <li id="chapter-31" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(31)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-batman-2024/8" target="_blank">Absolute Batman (2024-) #8</a></span>
+            <div class="chapter-box">
+                <span>Absolute Batman (2024-) #8</span>
                 <span class="date">14 May. 2025</span>
             </div>
         </li>
         
         <li id="chapter-32" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(32)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-flash-2025/3" target="_blank">Absolute Flash (2025-) #3</a></span>
+            <div class="chapter-box">
+                <span>Absolute Flash (2025-) #3</span>
                 <span class="date">21 May. 2025</span>
             </div>
         </li>
         
         <li id="chapter-33" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(33)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-wonder-woman-2024/8" target="_blank">Absolute Wonder Woman (2024-) #8</a></span>
+            <div class="chapter-box">
+                <span>Absolute Wonder Woman (2024-) #8</span>
                 <span class="date">28 May. 2025</span>
             </div>
         </li>
         
         <li id="chapter-34" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(34)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-martian-manhunter-2025/3" target="_blank">Absolute Martian Manhunter (2025-) #3</a></span>
+            <div class="chapter-box">
+                <span>Absolute Martian Manhunter (2025-) #3</span>
                 <span class="date">28 May. 2025</span>
             </div>
         </li>
         
         <li id="chapter-35" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(35)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-superman-2024/8" target="_blank">Absolute Superman (2024-) #8</a></span>
+            <div class="chapter-box">
+                <span>Absolute Superman (2024-) #8</span>
                 <span class="date">04 Jun. 2025</span>
             </div>
         </li>
         
         <li id="chapter-36" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(36)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-green-lantern-2025/3" target="_blank">Absolute Green Lantern (2025-) #3</a></span>
+            <div class="chapter-box">
+                <span>Absolute Green Lantern (2025-) #3</span>
                 <span class="date">04 Jun. 2025</span>
             </div>
         </li>
         
         <li id="chapter-37" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(37)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-batman-2024/9" target="_blank">Absolute Batman (2024-) #9</a></span>
+            <div class="chapter-box">
+                <span>Absolute Batman (2024-) #9</span>
                 <span class="date">11 Jun. 2025</span>
             </div>
         </li>
         
         <li id="chapter-38" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(38)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-flash-2025/4" target="_blank">Absolute Flash (2025-) #4</a></span>
+            <div class="chapter-box">
+                <span>Absolute Flash (2025-) #4</span>
                 <span class="date">18 Jun. 2025</span>
             </div>
         </li>
         
         <li id="chapter-39" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(39)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-wonder-woman-2024/9" target="_blank">Absolute Wonder Woman (2024-) #9</a></span>
+            <div class="chapter-box">
+                <span>Absolute Wonder Woman (2024-) #9</span>
                 <span class="date">25 Jun. 2025</span>
             </div>
         </li>
         
         <li id="chapter-40" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(40)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-martian-manhunter-2025/4" target="_blank">Absolute Martian Manhunter (2025-) #4</a></span>
+            <div class="chapter-box">
+                <span>Absolute Martian Manhunter (2025-) #4</span>
                 <span class="date">25 Jun. 2025</span>
             </div>
         </li>
         
         <li id="chapter-41" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(41)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-green-lantern-2025/4" target="_blank">Absolute Green Lantern (2025-) #4</a></span>
+            <div class="chapter-box">
+                <span>Absolute Green Lantern (2025-) #4</span>
                 <span class="date">02 Jul. 2025</span>
             </div>
         </li>
         
         <li id="chapter-42" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(42)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-superman-2024/9" target="_blank">Absolute Superman (2024-) #9</a></span>
+            <div class="chapter-box">
+                <span>Absolute Superman (2024-) #9</span>
                 <span class="date">09 Jul. 2025</span>
             </div>
         </li>
         
         <li id="chapter-43" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(43)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-batman-2024/10" target="_blank">Absolute Batman (2024-) #10</a></span>
+            <div class="chapter-box">
+                <span>Absolute Batman (2024-) #10</span>
                 <span class="date">16 Jul. 2025</span>
             </div>
         </li>
         
         <li id="chapter-44" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(44)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-flash-2025/5" target="_blank">Absolute Flash (2025-) #5</a></span>
+            <div class="chapter-box">
+                <span>Absolute Flash (2025-) #5</span>
                 <span class="date">16 Jul. 2025</span>
             </div>
         </li>
         
         <li id="chapter-45" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(45)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-wonder-woman-2024/10" target="_blank">Absolute Wonder Woman (2024-) #10</a></span>
+            <div class="chapter-box">
+                <span>Absolute Wonder Woman (2024-) #10</span>
                 <span class="date">23 Jul. 2025</span>
             </div>
         </li>
         
         <li id="chapter-46" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(46)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-martian-manhunter-2025/5" target="_blank">Absolute Martian Manhunter (2025-) #5</a></span>
+            <div class="chapter-box">
+                <span>Absolute Martian Manhunter (2025-) #5</span>
                 <span class="date">23 Jul. 2025</span>
             </div>
         </li>
         
         <li id="chapter-47" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(47)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-superman-2024/10" target="_blank">Absolute Superman (2024-) #10</a></span>
+            <div class="chapter-box">
+                <span>Absolute Superman (2024-) #10</span>
                 <span class="date">06 Aug. 2025</span>
             </div>
         </li>
         
         <li id="chapter-48" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(48)">
-            <div class="chapter-text">
-                <span><a href="https://readcomicsonline.ru/comic/absolute-green-lantern-2025/5" target="_blank">Absolute Green Lantern (2025-) #5</a></span>
+            <div class="chapter-box">
+                <span>Absolute Green Lantern (2025-) #5</span>
                 <span class="date">08 Aug. 2025</span>
             </div>
         </li>
         </ul>
 <script>
-function toggleChapter(index){
+function toggleChapter(index) {
     const li = document.getElementById('chapter-'+index);
     const checkbox = li.querySelector('input[type=checkbox]');
-    li.classList.toggle('checked', checkbox.checked);
-    li.classList.toggle('unchecked', !checkbox.checked);
+    if (checkbox.checked){
+        li.classList.remove('unchecked'); li.classList.add('checked');
+    } else {
+        li.classList.remove('checked'); li.classList.add('unchecked');
+    }
     localStorage.setItem('chapter-'+index, checkbox.checked);
 }
-function filterChapters(mode){
+function filterChapters(mode) {
     const lis = document.querySelectorAll('#chapters li');
     lis.forEach(li => {
-        if(mode==='all') li.style.display='flex';
-        else if(mode==='read') li.style.display = li.classList.contains('checked') ? 'flex':'none';
-        else if(mode==='unread') li.style.display = li.classList.contains('unchecked') ? 'flex':'none';
+        if(mode==='all') li.style.display='block';
+        else if(mode==='read') li.style.display = li.classList.contains('checked') ? 'block':'none';
+        else if(mode==='unread') li.style.display = li.classList.contains('unchecked') ? 'block':'none';
     });
     localStorage.setItem('filterMode', mode);
 }
-window.onload = function(){
+window.onload = function() {
     const lis = document.querySelectorAll('#chapters li');
     lis.forEach((li,index) => {
         const saved = localStorage.getItem('chapter-'+index);
         if(saved!==null){
             const checkbox = li.querySelector('input[type=checkbox]');
             checkbox.checked = saved==='true';
-            li.classList.toggle('checked', checkbox.checked);
-            li.classList.toggle('unchecked', !checkbox.checked);
+            li.classList.remove('checked','unchecked');
+            li.classList.add(checkbox.checked?'checked':'unchecked');
         }
     });
     const savedFilter = localStorage.getItem('filterMode') || 'all';
