@@ -5,33 +5,55 @@
 <title>Absolute Universe Reading Order</title>
 <style>
 html, body {
-    margin:0; padding:0; min-height:100%; font-family: Arial, sans-serif; color:white;
+    margin:0;
+    padding:0;
+    min-height:100%;
+    font-family: Arial, sans-serif;
+    color:white;
+    overflow: auto;
 }
 .background {
-    position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1;
-    background:url('absolute_roster_card_1.jpg') no-repeat center center; background-size:cover;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    z-index:-1;
+    background:url('absolute_roster_card_1.jpg') no-repeat center center;
+    background-size:cover;
 }
-@media only screen and (max-width:768px) {
-    .background { background:url('absolute_roster_card_0.jpg') no-repeat center center; background-size:cover; }
+@media only screen and (max-width: 768px) {
+    .background {
+        background:url('absolute_roster_card_0.jpg') no-repeat center center;
+        background-size:cover;
+    }
 }
 .content {
-    position:relative; padding:20px; width:100%;
-    background: rgba(0,0,0,0.3);  /* see-through */
-    min-height:100vh;
+    position:relative;
+    padding:20px;
+    width:100%;
 }
 h1 { text-align:center; margin-top:20px; }
 ul { list-style:none; padding:0; margin:20px; }
 li {
     display:flex; justify-content:space-between; align-items:center;
     margin:5px 0; padding:10px; border-radius:8px;
-    background: rgba(0,0,0,0.2);  /* slightly see-through */
 }
-li.unchecked span:first-child,
-li.unchecked span:first-child a,
-li.unchecked a { color:white !important; text-decoration:none !important; }
-li.checked span:first-child,
-li.checked span:first-child a,
-li.checked a { color:black !important; text-decoration:line-through !important; }
+li.unchecked {
+    color:white !important;
+}
+li.unchecked a {
+    color:white !important;
+    text-decoration:none !important;
+}
+li.checked {
+    color:black !important;
+    text-decoration:line-through !important;
+}
+li.checked a {
+    color:black !important;
+    text-decoration:line-through !important;
+}
 .date { margin-left:20px; }
 .filters { text-align:center; margin-bottom:20px; }
 .filters button { margin:0 10px; padding:5px 10px; cursor:pointer; }
@@ -350,10 +372,11 @@ li.checked a { color:black !important; text-decoration:line-through !important; 
 function toggleChapter(index) {
     const li = document.getElementById('chapter-'+index);
     const checkbox = li.querySelector('input[type=checkbox]');
-    if (checkbox.checked) {
-        li.classList.remove('unchecked'); li.classList.add('checked');
-    } else {
-        li.classList.remove('checked'); li.classList.add('unchecked');
+    li.classList.remove('checked','unchecked');
+    if(checkbox.checked){
+        li.classList.add('checked');
+    }else{
+        li.classList.add('unchecked');
     }
     localStorage.setItem('chapter-'+index, checkbox.checked);
 }
@@ -366,9 +389,9 @@ function filterChapters(mode) {
     });
     localStorage.setItem('filterMode', mode);
 }
-window.onload = function() {
+window.onload = function(){
     const lis = document.querySelectorAll('#chapters li');
-    lis.forEach((li,index) => {
+    lis.forEach((li,index)=>{
         const saved = localStorage.getItem('chapter-'+index);
         if(saved!==null){
             const checkbox = li.querySelector('input[type=checkbox]');
