@@ -5,20 +5,13 @@
 <title>Absolute Universe Reading Order</title>
 <style>
 html, body {
-    margin:0;
-    padding:0;
-    min-height:100%;
-    font-family: Arial, sans-serif;
-    color:white;
+    margin:0; padding:0; min-height:100%;
+    font-family: Arial, sans-serif; color:white;
     background:#111;
+    overflow:hidden;
 }
 .background {
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    z-index:-1;
+    position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1;
     background:url('absolute_roster_card_1.jpg') no-repeat center center;
     background-size:cover;
 }
@@ -29,9 +22,9 @@ html, body {
     }
 }
 .content {
-    position:relative;
-    padding:20px;
-    width:100%;
+    position:relative; padding:20px; width:100%;
+    height:100%; overflow-y:auto; -webkit-overflow-scrolling:touch;
+    background: rgba(0,0,0,0.3); /* see-through upgrade */
 }
 h1 { text-align:center; margin-top:20px; }
 ul { list-style:none; padding:0; margin:20px; }
