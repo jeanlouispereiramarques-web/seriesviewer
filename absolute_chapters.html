@@ -5,38 +5,56 @@
 <title>Absolute Universe Reading Order</title>
 <style>
 body {
-    margin: 0; padding: 0; height: 100%; overflow: hidden; font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
 }
 .background {
-    position: fixed; top:0; left:0; width:100%; height:100%; z-index:-1;
-    background: url('absolute_roster_card_1.jpg') no-repeat center center; background-size: cover;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: url('absolute_roster_card_1.jpg') no-repeat center center;
+    background-size: cover;
 }
 @media only screen and (max-width:768px) {
-    .background { background: url('absolute_roster_card_0.jpg') no-repeat center center; background-size: cover; }
+    .background {
+        background: url('absolute_roster_card_0.jpg') no-repeat center center;
+        background-size: cover;
+    }
 }
 .content {
-    position: relative; height:100%; width:100%; overflow-y:auto; -webkit-overflow-scrolling: touch;
-    padding:20px; color:white;
+    position: relative;
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 20px;
+    color: white;
 }
 h1 { text-align:center; margin-top:20px; }
 ul { list-style:none; padding:0; margin:20px; }
 li {
     display:flex; justify-content:space-between; align-items:center;
-    margin:5px 0; padding:10px; border-radius:8px; background: rgba(0,0,0,0.5);
+    margin:5px 0; padding:10px; border-radius:8px;
+    background: rgba(0,0,0,0.5);
 }
-
-/* Force white/black for both HTMLs */
 li.unchecked span:first-child,
 li.unchecked span:first-child a,
 li.unchecked a {
-    color: white !important; text-decoration: none !important;
+    color: white !important;
+    text-decoration: none !important;
 }
 li.checked span:first-child,
 li.checked span:first-child a,
 li.checked a {
-    color: black !important; text-decoration: line-through !important;
+    color: black !important;
+    text-decoration: line-through !important;
 }
-
 .date { margin-left:20px; }
 .filters { text-align:center; margin-bottom:20px; }
 .filters button { margin:0 10px; padding:5px 10px; }
@@ -51,7 +69,11 @@ li.checked a {
 <div class="background"></div>
 <div class="content">
 <h1>Absolute Universe Reading Order</h1>
-
+<div class='filters'>
+    <button onclick="filterChapters('all')">All</button>
+    <button onclick="filterChapters('unread')">Unread</button>
+    <button onclick="filterChapters('read')">Read</button>
+</div>
 <ul id="chapters">
         <li id="chapter-0" class="unchecked">
             <input type="checkbox"  onchange="toggleChapter(0)">
@@ -378,10 +400,8 @@ window.onload = function() {
             li.classList.add(checkbox.checked?'checked':'unchecked');
         }
     });
-    if(false) {
-        const savedFilter = localStorage.getItem('filterMode') || 'unread';
-        filterChapters(savedFilter);
-    }
+    const savedFilter = localStorage.getItem('filterMode') || 'all';
+    filterChapters(savedFilter);
 }
 </script>
 </div>
