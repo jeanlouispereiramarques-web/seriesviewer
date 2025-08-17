@@ -11,7 +11,6 @@ body {
     overflow: hidden;
     font-family: Arial, sans-serif;
 }
-
 .background {
     position: fixed;
     top: 0;
@@ -22,14 +21,12 @@ body {
     background: url('absolute_roster_card_1.jpg') no-repeat center center;
     background-size: cover;
 }
-
 @media only screen and (max-width:768px) {
     .background {
         background: url('absolute_roster_card_0.jpg') no-repeat center center;
         background-size: cover;
     }
 }
-
 .content {
     position: relative;
     height: 100%;
@@ -39,7 +36,6 @@ body {
     padding: 20px;
     color: white;
 }
-
 h1 { text-align:center; margin-top:20px; }
 ul { list-style:none; padding:0; margin:20px; }
 li {
@@ -48,7 +44,7 @@ li {
     background: rgba(0,0,0,0.5);
 }
 
-/* Force all link colors */
+/* Force white/black for both HTMLs */
 li.unchecked span:first-child,
 li.unchecked span:first-child a,
 li.unchecked a {
@@ -65,7 +61,6 @@ li.checked a {
 .date { margin-left:20px; }
 .filters { text-align:center; margin-bottom:20px; }
 .filters button { margin:0 10px; padding:5px 10px; }
-
 @media only screen and (max-width:768px) {
     h1 { font-size:2em; }
     li { flex-direction:column; align-items:flex-start; padding:10px; }
@@ -384,7 +379,6 @@ function toggleChapter(index) {
     }
     localStorage.setItem('chapter-'+index, checkbox.checked);
 }
-
 function filterChapters(mode) {
     const lis = document.querySelectorAll('#chapters li');
     lis.forEach(li => {
@@ -394,19 +388,18 @@ function filterChapters(mode) {
     });
     localStorage.setItem('filterMode', mode);
 }
-
 window.onload = function() {
+    const lis = document.querySelectorAll('#chapters li');
+    lis.forEach((li,index) => {
+        const saved = localStorage.getItem('chapter-'+index);
+        if(saved!==null){
+            const checkbox = li.querySelector('input[type=checkbox]');
+            checkbox.checked = saved==='true';
+            li.classList.remove('checked','unchecked');
+            li.classList.add(checkbox.checked?'checked':'unchecked');
+        }
+    });
     if(false) {
-        const lis = document.querySelectorAll('#chapters li');
-        lis.forEach((li,index) => {
-            const saved = localStorage.getItem('chapter-'+index);
-            if(saved!==null){
-                const checkbox = li.querySelector('input[type=checkbox]');
-                checkbox.checked = saved==='true';
-                li.classList.remove('checked','unchecked');
-                li.classList.add(checkbox.checked?'checked':'unchecked');
-            }
-        });
         const savedFilter = localStorage.getItem('filterMode') || 'unread';
         filterChapters(savedFilter);
     }
