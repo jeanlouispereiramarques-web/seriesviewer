@@ -27,8 +27,7 @@ body {
 @media only screen and (max-width:768px) {
     .background {
         background: url('absolute_roster_card_0.jpg') no-repeat center center;
-        background-size: 100% 100%;
-        background-position: center center;
+        background-size: cover;
     }
 }
 .content {
@@ -57,9 +56,16 @@ li.checked span.title a {
     text-decoration:line-through !important;
 }
 .date { margin-left: auto; }
-.filters { text-align:center; margin-bottom:20px; }
-.filters button { margin:0 10px; padding:5px 10px; cursor:pointer; }
-.counts { text-align:center; margin-bottom:10px; }
+.filters {
+    text-align:center; margin-bottom:20px;
+}
+.filters button {
+    margin:0 10px; padding:5px 10px; cursor:pointer;
+}
+.counts {
+    display:inline-block; margin-left:10px;
+    font-weight:bold;
+}
 @media only screen and (max-width:768px) {
     h1 { font-size:2em; }
     li { flex-direction:column; align-items:flex-start; padding:10px; }
@@ -71,15 +77,10 @@ li.checked span.title a {
 <div class="background"></div>
 <div class="content">
 <h1>Absolute Universe Reading Order</h1>
-<div class="filters">
-    <button onclick="filterChapters('all')">All</button>
-    <button onclick="filterChapters('unread')">Unread</button>
-    <button onclick="filterChapters('read')">Read</button>
-</div>
-<div class="counts">
-    All: <span id="count-all">0</span> |
-    Read: <span id="count-read">0</span> |
-    Unread: <span id="count-unread">0</span>
+<div class='filters'>
+    <button onclick="filterChapters('all')">All <span id="count-all" class="counts">0</span></button>
+    <button onclick="filterChapters('unread')">Unread <span id="count-unread" class="counts">0</span></button>
+    <button onclick="filterChapters('read')">Read <span id="count-read" class="counts">0</span></button>
 </div>
 <ul id="chapters">
         <li id="chapter-0" class="unchecked">
@@ -379,20 +380,14 @@ li.checked span.title a {
 <script>
 function updateCounts() {
     const lis = document.querySelectorAll('#chapters li');
-    let total = 0, read = 0, unread = 0;
+    let total = lis.length, read = 0, unread = 0;
     lis.forEach(li => {
-        if(li.style.display !== 'none') {
-            total++;
-            if(li.classList.contains('checked')) read++;
-            else unread++;
-        }
+        if(li.classList.contains('checked')) read++;
+        else unread++;
     });
-    const allElem = document.getElementById('count-all');
-    const readElem = document.getElementById('count-read');
-    const unreadElem = document.getElementById('count-unread');
-    if(allElem) allElem.textContent = total;
-    if(readElem) readElem.textContent = read;
-    if(unreadElem) unreadElem.textContent = unread;
+    document.getElementById('count-all').textContent = total;
+    document.getElementById('count-read').textContent = read;
+    document.getElementById('count-unread').textContent = unread;
 }
 
 function toggleChapter(index) {
@@ -415,10 +410,9 @@ function filterChapters(mode) {
         else if(mode==='unread') li.style.display = li.classList.contains('unchecked') ? 'flex':'none';
     });
     localStorage.setItem('filterMode', mode);
-    updateCounts();
 }
 
-window.addEventListener('DOMContentLoaded', () => {
+window.onload = function(){
     const lis = document.querySelectorAll('#chapters li');
     lis.forEach((li,index) => {
         const saved = localStorage.getItem('chapter-'+index);
@@ -431,7 +425,8 @@ window.addEventListener('DOMContentLoaded', () => {
     });
     const savedFilter = localStorage.getItem('filterMode') || 'all';
     filterChapters(savedFilter);
-});
+    updateCounts();
+}
 </script>
 </div>
 </body>
