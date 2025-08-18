@@ -27,8 +27,8 @@ body {
 @media only screen and (max-width:768px) {
     .background {
         background: url('absolute_roster_card_0.jpg') no-repeat center center;
-        background-size: contain;
-        background-position: center top;
+        background-size: cover; /* fill entire phone screen */
+        background-position: center center;
         background-attachment: scroll;
     }
 }
@@ -77,309 +77,309 @@ li.checked span.title a {
     <button onclick="filterChapters('read')">Read</button>
 </div>
 <ul id="chapters">
-        <li id="chapter-0" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(0)">
+        <li id="chapter-0" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(0)">
             <span class="title">Absolute Batman (2024-) #1</span>
             <span class="date">09 Oct. 2024</span>
         </li>
         
-        <li id="chapter-1" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(1)">
+        <li id="chapter-1" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(1)">
             <span class="title">Absolute Superman (2024-) #Previews</span>
             <span class="date">20 Oct. 2024</span>
         </li>
         
-        <li id="chapter-2" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(2)">
+        <li id="chapter-2" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(2)">
             <span class="title">Absolute Wonder Woman (2024-) #1</span>
             <span class="date">23 Oct. 2024</span>
         </li>
         
-        <li id="chapter-3" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(3)">
+        <li id="chapter-3" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(3)">
             <span class="title">Absolute Superman (2024-) #1</span>
             <span class="date">06 Nov. 2024</span>
         </li>
         
-        <li id="chapter-4" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(4)">
+        <li id="chapter-4" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(4)">
             <span class="title">Absolute Batman (2024-) #2</span>
             <span class="date">13 Nov. 2024</span>
         </li>
         
-        <li id="chapter-5" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(5)">
+        <li id="chapter-5" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(5)">
             <span class="title">Absolute Wonder Woman (2024-) #2</span>
             <span class="date">27 Nov. 2024</span>
         </li>
         
-        <li id="chapter-6" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(6)">
+        <li id="chapter-6" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(6)">
             <span class="title">Absolute Superman (2024-) #2</span>
             <span class="date">04 Dec. 2024</span>
         </li>
         
-        <li id="chapter-7" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(7)">
+        <li id="chapter-7" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(7)">
             <span class="title">Absolute Batman (2024-) #1 Noir Edition</span>
             <span class="date">12 Dec. 2024</span>
         </li>
         
-        <li id="chapter-8" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(8)">
+        <li id="chapter-8" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(8)">
             <span class="title">Absolute Batman (2024-) #3</span>
             <span class="date">18 Dec. 2024</span>
         </li>
         
-        <li id="chapter-9" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(9)">
+        <li id="chapter-9" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(9)">
             <span class="title">Absolute Wonder Woman (2024-) #1 Noir Edition</span>
             <span class="date">25 Dec. 2024</span>
         </li>
         
-        <li id="chapter-10" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(10)">
+        <li id="chapter-10" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(10)">
             <span class="title">Absolute Wonder Woman (2024-) #3</span>
             <span class="date">26 Dec. 2024</span>
         </li>
         
-        <li id="chapter-11" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(11)">
+        <li id="chapter-11" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(11)">
             <span class="title">Absolute Superman (2024-) #3</span>
             <span class="date">02 Jan. 2025</span>
         </li>
         
-        <li id="chapter-12" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(12)">
+        <li id="chapter-12" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(12)">
             <span class="title">Absolute Batman (2024-) #4</span>
             <span class="date">09 Jan. 2025</span>
         </li>
         
-        <li id="chapter-13" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(13)">
+        <li id="chapter-13" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(13)">
             <span class="title">Absolute Wonder Woman (2024-) #4</span>
             <span class="date">22 Jan. 2025</span>
         </li>
         
-        <li id="chapter-14" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(14)">
+        <li id="chapter-14" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(14)">
             <span class="title">Absolute Superman (2024-) #4</span>
             <span class="date">05 Feb. 2025</span>
         </li>
         
-        <li id="chapter-15" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(15)">
+        <li id="chapter-15" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(15)">
             <span class="title">Absolute Batman (2024-) #5</span>
             <span class="date">13 Feb. 2025</span>
         </li>
         
-        <li id="chapter-16" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(16)">
+        <li id="chapter-16" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(16)">
             <span class="title">Absolute Wonder Woman (2024-) #5</span>
             <span class="date">26 Feb. 2025</span>
         </li>
         
-        <li id="chapter-17" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(17)">
+        <li id="chapter-17" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(17)">
             <span class="title">Absolute Superman (2024-) #5</span>
             <span class="date">12 Mar. 2025</span>
         </li>
         
-        <li id="chapter-18" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(18)">
+        <li id="chapter-18" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(18)">
             <span class="title">Absolute Batman (2024-) #6</span>
             <span class="date">19 Mar. 2025</span>
         </li>
         
-        <li id="chapter-19" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(19)">
+        <li id="chapter-19" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(19)">
             <span class="title">Absolute Flash (2025-) #1</span>
             <span class="date">19 Mar. 2025</span>
         </li>
         
-        <li id="chapter-20" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(20)">
+        <li id="chapter-20" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(20)">
             <span class="title">Absolute Wonder Woman (2024-) #6</span>
             <span class="date">26 Mar. 2025</span>
         </li>
         
-        <li id="chapter-21" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(21)">
+        <li id="chapter-21" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(21)">
             <span class="title">Absolute Martian Manhunter (2025-) #1</span>
             <span class="date">26 Mar. 2025</span>
         </li>
         
-        <li id="chapter-22" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(22)">
+        <li id="chapter-22" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(22)">
             <span class="title">Absolute Martian Manhunter (2025-) #1 - Martianvision Activated</span>
             <span class="date">29 Mar. 2025</span>
         </li>
         
-        <li id="chapter-23" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(23)">
+        <li id="chapter-23" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(23)">
             <span class="title">Absolute Superman (2024-) #6</span>
             <span class="date">02 Apr. 2025</span>
         </li>
         
-        <li id="chapter-24" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(24)">
+        <li id="chapter-24" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(24)">
             <span class="title">Absolute Green Lantern (2025-) #1</span>
             <span class="date">02 Apr. 2025</span>
         </li>
         
-        <li id="chapter-25" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(25)">
+        <li id="chapter-25" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(25)">
             <span class="title">Absolute Batman (2024-) #7</span>
             <span class="date">09 Apr. 2025</span>
         </li>
         
-        <li id="chapter-26" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(26)">
+        <li id="chapter-26" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(26)">
             <span class="title">Absolute Flash (2025-) #2</span>
             <span class="date">16 Apr. 2025</span>
         </li>
         
-        <li id="chapter-27" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(27)">
+        <li id="chapter-27" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(27)">
             <span class="title">Absolute Wonder Woman (2024-) #7</span>
             <span class="date">23 Apr. 2025</span>
         </li>
         
-        <li id="chapter-28" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(28)">
+        <li id="chapter-28" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(28)">
             <span class="title">Absolute Martian Manhunter (2025-) #2</span>
             <span class="date">23 Apr. 2025</span>
         </li>
         
-        <li id="chapter-29" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(29)">
+        <li id="chapter-29" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(29)">
             <span class="title">Absolute Superman (2024-) #7</span>
             <span class="date">07 May. 2025</span>
         </li>
         
-        <li id="chapter-30" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(30)">
+        <li id="chapter-30" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(30)">
             <span class="title">Absolute Green Lantern (2025-) #2</span>
             <span class="date">07 May. 2025</span>
         </li>
         
-        <li id="chapter-31" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(31)">
+        <li id="chapter-31" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(31)">
             <span class="title">Absolute Batman (2024-) #8</span>
             <span class="date">14 May. 2025</span>
         </li>
         
-        <li id="chapter-32" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(32)">
+        <li id="chapter-32" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(32)">
             <span class="title">Absolute Flash (2025-) #3</span>
             <span class="date">21 May. 2025</span>
         </li>
         
-        <li id="chapter-33" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(33)">
+        <li id="chapter-33" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(33)">
             <span class="title">Absolute Wonder Woman (2024-) #8</span>
             <span class="date">28 May. 2025</span>
         </li>
         
-        <li id="chapter-34" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(34)">
+        <li id="chapter-34" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(34)">
             <span class="title">Absolute Martian Manhunter (2025-) #3</span>
             <span class="date">28 May. 2025</span>
         </li>
         
-        <li id="chapter-35" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(35)">
+        <li id="chapter-35" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(35)">
             <span class="title">Absolute Superman (2024-) #8</span>
             <span class="date">04 Jun. 2025</span>
         </li>
         
-        <li id="chapter-36" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(36)">
+        <li id="chapter-36" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(36)">
             <span class="title">Absolute Green Lantern (2025-) #3</span>
             <span class="date">04 Jun. 2025</span>
         </li>
         
-        <li id="chapter-37" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(37)">
+        <li id="chapter-37" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(37)">
             <span class="title">Absolute Batman (2024-) #9</span>
             <span class="date">11 Jun. 2025</span>
         </li>
         
-        <li id="chapter-38" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(38)">
+        <li id="chapter-38" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(38)">
             <span class="title">Absolute Flash (2025-) #4</span>
             <span class="date">18 Jun. 2025</span>
         </li>
         
-        <li id="chapter-39" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(39)">
+        <li id="chapter-39" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(39)">
             <span class="title">Absolute Wonder Woman (2024-) #9</span>
             <span class="date">25 Jun. 2025</span>
         </li>
         
-        <li id="chapter-40" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(40)">
+        <li id="chapter-40" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(40)">
             <span class="title">Absolute Martian Manhunter (2025-) #4</span>
             <span class="date">25 Jun. 2025</span>
         </li>
         
-        <li id="chapter-41" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(41)">
+        <li id="chapter-41" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(41)">
             <span class="title">Absolute Green Lantern (2025-) #4</span>
             <span class="date">02 Jul. 2025</span>
         </li>
         
-        <li id="chapter-42" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(42)">
+        <li id="chapter-42" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(42)">
             <span class="title">Absolute Superman (2024-) #9</span>
             <span class="date">09 Jul. 2025</span>
         </li>
         
-        <li id="chapter-43" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(43)">
+        <li id="chapter-43" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(43)">
             <span class="title">Absolute Batman (2024-) #10</span>
             <span class="date">16 Jul. 2025</span>
         </li>
         
-        <li id="chapter-44" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(44)">
+        <li id="chapter-44" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(44)">
             <span class="title">Absolute Flash (2025-) #5</span>
             <span class="date">16 Jul. 2025</span>
         </li>
         
-        <li id="chapter-45" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(45)">
+        <li id="chapter-45" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(45)">
             <span class="title">Absolute Wonder Woman (2024-) #10</span>
             <span class="date">23 Jul. 2025</span>
         </li>
         
-        <li id="chapter-46" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(46)">
+        <li id="chapter-46" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(46)">
             <span class="title">Absolute Martian Manhunter (2025-) #5</span>
             <span class="date">23 Jul. 2025</span>
         </li>
         
-        <li id="chapter-47" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(47)">
+        <li id="chapter-47" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(47)">
             <span class="title">Absolute Superman (2024-) #10</span>
             <span class="date">06 Aug. 2025</span>
         </li>
         
-        <li id="chapter-48" class="{'checked' if chap.get('checked') else 'unchecked'}">
-            <input type="checkbox" {'checked' if chap.get('checked') else ''} onchange="toggleChapter(48)">
+        <li id="chapter-48" class="unchecked">
+            <input type="checkbox"  onchange="toggleChapter(48)">
             <span class="title">Absolute Green Lantern (2025-) #5</span>
             <span class="date">08 Aug. 2025</span>
         </li>
         </ul>
 <script>
-function toggleChapter(index) {
+function toggleChapter(index){
     const li = document.getElementById('chapter-'+index);
     const checkbox = li.querySelector('input[type=checkbox]');
     if(checkbox.checked){ li.classList.remove('unchecked'); li.classList.add('checked'); }
     else { li.classList.remove('checked'); li.classList.add('unchecked'); }
     localStorage.setItem('chapter-'+index, checkbox.checked);
 }
-function filterChapters(mode) {
+function filterChapters(mode){
     const lis = document.querySelectorAll('#chapters li');
     lis.forEach(li => {
         if(mode==='all') li.style.display='flex';
@@ -388,7 +388,7 @@ function filterChapters(mode) {
     });
     localStorage.setItem('filterMode', mode);
 }
-window.onload = function() {
+window.onload = function(){
     const lis = document.querySelectorAll('#chapters li');
     lis.forEach((li,index) => {
         const saved = localStorage.getItem('chapter-'+index);
