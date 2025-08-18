@@ -4,73 +4,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Absolute Universe Reading Order</title>
 <style>
-html, body {
-    margin:0;
-    padding:0;
-    height:100%;
-    font-family: Arial, sans-serif;
-    color:white;
-}
-body {
-    overflow:hidden;
-}
-.background {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    background: url('absolute_roster_card_1.jpg') no-repeat center center;
-    background-size: cover;
-}
-@media only screen and (max-width:768px) {
-    .background {
-        background: url('absolute_roster_card_0.jpg') no-repeat center center;
-        background-size: cover;
-    }
-}
-.content {
-    position: relative;
-    height: 100%;
-    width: 100%;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    padding: 20px;
-}
+html, body { margin:0; padding:0; height:100%; font-family: Arial, sans-serif; color:white; }
+body { overflow:hidden; }
+.background { position: fixed; top:0; left:0; width:100%; height:100%; z-index:-1; background:url('absolute_roster_card_1.jpg') no-repeat center center; background-size:cover; }
+@media only screen and (max-width:768px) { .background { background:url('absolute_roster_card_0.jpg') no-repeat center center; background-size:cover; } }
+.content { position: relative; height:100%; width:100%; overflow-y:auto; -webkit-overflow-scrolling:touch; padding:20px; }
 h1 { text-align:center; margin-top:20px; }
 ul { list-style:none; padding:0; margin:20px; }
-li {
-    display:flex; justify-content:space-between; align-items:center;
-    margin:5px 0; padding:10px; border-radius:8px;
-    background: rgba(0,0,0,0.5);
-}
-li.unchecked span.title,
-li.unchecked span.title a {
-    color:white !important;
-    text-decoration:none !important;
-}
-li.checked span.title,
-li.checked span.title a {
-    color:black !important;
-    text-decoration:line-through !important;
-}
-.date { margin-left: auto; }
-.filters {
-    text-align:center; margin-bottom:20px;
-}
-.filters button {
-    margin:0 10px; padding:5px 10px; cursor:pointer;
-}
-.counts {
-    display:inline-block; margin-left:10px;
-    font-weight:bold;
-}
-@media only screen and (max-width:768px) {
-    h1 { font-size:2em; }
-    li { flex-direction:column; align-items:flex-start; padding:10px; }
-    .date { font-size:0.7em; margin-left:0; margin-top:5px; align-self:flex-end; }
-}
+li { display:flex; justify-content:space-between; align-items:center; margin:5px 0; padding:10px; border-radius:8px; background: rgba(0,0,0,0.5); }
+li.unchecked span.title, li.unchecked span.title a { color:white !important; text-decoration:none !important; }
+li.checked span.title, li.checked span.title a { color:black !important; text-decoration:line-through !important; }
+.date { margin-left:auto; }
+.filters { text-align:center; margin-bottom:10px; }
+.filters button { margin:0 10px; padding:5px 10px; cursor:pointer; }
+@media only screen and (max-width:768px) { h1 { font-size:2em; } li { flex-direction:column; align-items:flex-start; padding:10px; } .date { font-size:0.7em; margin-left:0; margin-top:5px; align-self:flex-end; } }
 </style>
 </head>
 <body>
@@ -78,9 +25,9 @@ li.checked span.title a {
 <div class="content">
 <h1>Absolute Universe Reading Order</h1>
 <div class='filters'>
-    <button onclick="filterChapters('all')">All <span id="count-all" class="counts">0</span></button>
-    <button onclick="filterChapters('unread')">Unread <span id="count-unread" class="counts">0</span></button>
-    <button onclick="filterChapters('read')">Read <span id="count-read" class="counts">0</span></button>
+    <button onclick="filterChapters('all')">All (<span id='count-all'>0</span>)</button>
+    <button onclick="filterChapters('unread')">Unread (<span id='count-unread'>0</span>)</button>
+    <button onclick="filterChapters('read')">Read (<span id='count-read'>0</span>)</button>
 </div>
 <ul id="chapters">
         <li id="chapter-0" class="unchecked">
@@ -380,11 +327,8 @@ li.checked span.title a {
 <script>
 function updateCounts() {
     const lis = document.querySelectorAll('#chapters li');
-    let total = lis.length, read = 0, unread = 0;
-    lis.forEach(li => {
-        if(li.classList.contains('checked')) read++;
-        else unread++;
-    });
+    let total=0, read=0, unread=0;
+    lis.forEach(li => { total++; if(li.classList.contains('checked')) read++; else unread++; });
     document.getElementById('count-all').textContent = total;
     document.getElementById('count-read').textContent = read;
     document.getElementById('count-unread').textContent = unread;
@@ -393,12 +337,9 @@ function updateCounts() {
 function toggleChapter(index) {
     const li = document.getElementById('chapter-'+index);
     const checkbox = li.querySelector('input[type=checkbox]');
-    if(checkbox.checked) {
-        li.classList.remove('unchecked'); li.classList.add('checked');
-    } else {
-        li.classList.remove('checked'); li.classList.add('unchecked');
-    }
-    localStorage.setItem('chapter-'+index, checkbox.checked);
+    if(checkbox.checked) { li.classList.remove('unchecked'); li.classList.add('checked'); }
+    else { li.classList.remove('checked'); li.classList.add('unchecked'); }
+    localStorage.setItem('absolute-chapter-'+index, checkbox.checked);
     updateCounts();
 }
 
@@ -409,24 +350,24 @@ function filterChapters(mode) {
         else if(mode==='read') li.style.display = li.classList.contains('checked') ? 'flex':'none';
         else if(mode==='unread') li.style.display = li.classList.contains('unchecked') ? 'flex':'none';
     });
-    localStorage.setItem('filterMode', mode);
+    localStorage.setItem('absolute-filterMode', mode);
 }
 
-window.onload = function(){
+window.addEventListener('DOMContentLoaded', () => {
     const lis = document.querySelectorAll('#chapters li');
     lis.forEach((li,index) => {
-        const saved = localStorage.getItem('chapter-'+index);
-        if(saved!==null){
+        const saved = localStorage.getItem('absolute-chapter-'+index);
+        if(saved!==null) {
             const checkbox = li.querySelector('input[type=checkbox]');
             checkbox.checked = saved==='true';
             li.classList.remove('checked','unchecked');
             li.classList.add(checkbox.checked?'checked':'unchecked');
         }
     });
-    const savedFilter = localStorage.getItem('filterMode') || 'all';
+    const savedFilter = localStorage.getItem('absolute-filterMode') || 'all';
     filterChapters(savedFilter);
     updateCounts();
-}
+});
 </script>
 </div>
 </body>
