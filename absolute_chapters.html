@@ -11,7 +11,7 @@ body { overflow:hidden; }
 .content { position: relative; height:100%; width:100%; overflow-y:auto; -webkit-overflow-scrolling:touch; padding:20px; }
 h1 { text-align:center; margin-top:20px; }
 ul { list-style:none; padding:0; margin:20px; }
-li { display:flex; justify-content:space-between; align-items:center; margin:5px 0; padding:10px; border-radius:8px; background: rgba(0,0,0,0.5); }
+li { display:flex; justify-content:space-between; align-items:center; margin:5px 0; padding:10px; border-radius:8px; background: rgba(0,0,0,0.5); transition: opacity 0.4s ease; }
 li.unchecked span.title, li.unchecked span.title a { color:red !important; text-decoration:none !important; }
 li.checked span.title, li.checked span.title a { color:green !important; text-decoration:line-through !important; }
 .date { margin-left:auto; }
@@ -436,14 +436,25 @@ function toggleChapter(prefix, index) {
     const li = document.getElementById(prefix+'-'+index);
     const checkbox = li.querySelector('input[type=checkbox]');
     li.classList.remove('checked','unchecked');
-    if(checkbox.checked) { li.classList.add('checked'); }
-    else { li.classList.add('unchecked'); }
+    if(checkbox.checked) {
+        li.classList.add('checked');
+    } else {
+        li.classList.add('unchecked');
+    }
     localStorage.setItem('absolute-'+prefix+'-chapter-checked-'+index, checkbox.checked);
     updateCounts();
+    // Smooth fade out when disappearing
+    const currentFilter = localStorage.getItem('absolute-filterMode') || 'all';
+    if((currentFilter==='unread' && checkbox.checked) || (currentFilter==='read' && !checkbox.checked)) {
+        li.style.opacity = 0;
+        setTimeout(() => li.style.display = 'none', 400);
+    } else {
+        li.style.display = 'flex';
+        li.style.opacity = 1;
+    }
 }
 
 function toggleLiClick(prefix, index, event) {
-    // Ignore if the click was directly on the checkbox
     if (event.target.tagName.toLowerCase() === 'input') return;
     const li = document.getElementById(prefix + '-' + index);
     const checkbox = li.querySelector('input[type=checkbox]');
@@ -453,6 +464,15 @@ function toggleLiClick(prefix, index, event) {
         li.classList.add(checkbox.checked ? 'checked' : 'unchecked');
         localStorage.setItem('absolute-' + prefix + '-chapter-checked-' + index, checkbox.checked);
         updateCounts();
+        // Smooth fade out based on filter
+        const currentFilter = localStorage.getItem('absolute-filterMode') || 'all';
+        if((currentFilter==='unread' && checkbox.checked) || (currentFilter==='read' && !checkbox.checked)) {
+            li.style.opacity = 0;
+            setTimeout(() => li.style.display = 'none', 400);
+        } else {
+            li.style.display = 'flex';
+            li.style.opacity = 1;
+        }
     }
 }
 
@@ -465,6 +485,15 @@ function markAll(prefix, read=true) {
             li.classList.remove('checked','unchecked');
             li.classList.add(read?'checked':'unchecked');
             localStorage.setItem('absolute-'+prefix+'-chapter-checked-'+index, read);
+            // Animate vanish for filtered view
+            const currentFilter = localStorage.getItem('absolute-filterMode') || 'all';
+            if((currentFilter==='unread' && read) || (currentFilter==='read' && !read)) {
+                li.style.opacity = 0;
+                setTimeout(() => li.style.display='none', 400);
+            } else {
+                li.style.display='flex';
+                li.style.opacity = 1;
+            }
         }
     });
     updateCounts();
@@ -474,6 +503,8 @@ function filterChapters(mode) {
     const allLis = document.querySelectorAll('#all-chapters li');
     const newLis = document.querySelectorAll('#new-chapters li');
     [...allLis, ...newLis].forEach(li => {
+        li.style.display='flex';
+        li.style.opacity=1;
         if(mode==='all') li.style.display='flex';
         else if(mode==='read') li.style.display = li.classList.contains('checked') ? 'flex':'none';
         else if(mode==='unread') li.style.display = li.classList.contains('unchecked') ? 'flex':'none';
@@ -497,7 +528,6 @@ window.addEventListener('DOMContentLoaded', () => {
     const allLis = document.querySelectorAll('#all-chapters li');
     const now = Date.now();
 
-    // Move chapters older than 24h from new -> all in HTML
     newLis.forEach((li,index) => {
         const storedTimeKey = 'absolute-new-chapter-'+index;
         let stored = localStorage.getItem(storedTimeKey);
@@ -511,7 +541,6 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Restore glow for All Chapters
     const allUpdatedLis = document.querySelectorAll('#all-chapters li');
     allUpdatedLis.forEach(li => {
         const glowKey = 'absolute-orange-glow-'+li.id;
@@ -528,7 +557,6 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Restore checkboxes
     allUpdatedLis.forEach((li,index) => {
         const checkbox = li.querySelector('input[type=checkbox]');
         if(checkbox) {
