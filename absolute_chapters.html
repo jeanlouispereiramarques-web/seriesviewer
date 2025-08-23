@@ -44,7 +44,21 @@ li.checked span.title, li.checked span.title a { color:green !important; text-de
 
 <div class="new-section">
 <h2>New Chapters</h2>
-<ul id="new-chapters"></ul>
+<ul id="new-chapters">
+            <li id="new-0" class="unchecked"
+                onclick="toggleLiClick('new', 0, event)">
+                
+                <span class="title">Absolute Batman (2024-) #11</span>
+                <span class="date">20 Aug. 2025</span>
+            </li>
+            
+            <li id="new-1" class="unchecked"
+                onclick="toggleLiClick('new', 1, event)">
+                
+                <span class="title">Absolute Flash (2025-) #6</span>
+                <span class="date">20 Aug. 2025</span>
+            </li>
+            </ul>
 </div>
 
 <div class="search-box">
@@ -404,20 +418,6 @@ li.checked span.title, li.checked span.title a { color:green !important; text-de
                 <span class="title">Absolute Green Lantern (2025-) #5</span>
                 <span class="date">08 Aug. 2025</span>
             </li>
-            
-            <li id="all-49" class="unchecked"
-                onclick="toggleLiClick('all', 49, event)">
-                <input type="checkbox"  onchange="toggleChapter('all', 49)">
-                <span class="title">Absolute Batman (2024-) #11</span>
-                <span class="date">20 Aug. 2025</span>
-            </li>
-            
-            <li id="all-50" class="unchecked"
-                onclick="toggleLiClick('all', 50, event)">
-                <input type="checkbox"  onchange="toggleChapter('all', 50)">
-                <span class="title">Absolute Flash (2025-) #6</span>
-                <span class="date">20 Aug. 2025</span>
-            </li>
             </ul>
 
 <script>
@@ -436,14 +436,9 @@ function toggleChapter(prefix, index) {
     const li = document.getElementById(prefix+'-'+index);
     const checkbox = li.querySelector('input[type=checkbox]');
     li.classList.remove('checked','unchecked');
-    if(checkbox.checked) {
-        li.classList.add('checked');
-    } else {
-        li.classList.add('unchecked');
-    }
+    li.classList.add(checkbox.checked ? 'checked' : 'unchecked');
     localStorage.setItem('absolute-'+prefix+'-chapter-checked-'+index, checkbox.checked);
     updateCounts();
-    // Smooth fade out when disappearing
     const currentFilter = localStorage.getItem('absolute-filterMode') || 'all';
     if((currentFilter==='unread' && checkbox.checked) || (currentFilter==='read' && !checkbox.checked)) {
         li.style.opacity = 0;
@@ -464,7 +459,6 @@ function toggleLiClick(prefix, index, event) {
         li.classList.add(checkbox.checked ? 'checked' : 'unchecked');
         localStorage.setItem('absolute-' + prefix + '-chapter-checked-' + index, checkbox.checked);
         updateCounts();
-        // Smooth fade out based on filter
         const currentFilter = localStorage.getItem('absolute-filterMode') || 'all';
         if((currentFilter==='unread' && checkbox.checked) || (currentFilter==='read' && !checkbox.checked)) {
             li.style.opacity = 0;
@@ -480,14 +474,13 @@ function markAll(prefix, read=true) {
     const allLis = document.querySelectorAll('#'+prefix+'-chapters li');
     allLis.forEach((li,index)=>{
         const checkbox = li.querySelector('input[type=checkbox]');
-        if(checkbox) {
+        if(checkbox){
             checkbox.checked = read;
             li.classList.remove('checked','unchecked');
             li.classList.add(read?'checked':'unchecked');
             localStorage.setItem('absolute-'+prefix+'-chapter-checked-'+index, read);
-            // Animate vanish for filtered view
             const currentFilter = localStorage.getItem('absolute-filterMode') || 'all';
-            if((currentFilter==='unread' && read) || (currentFilter==='read' && !read)) {
+            if((currentFilter==='unread' && read) || (currentFilter==='read' && !read)){
                 li.style.opacity = 0;
                 setTimeout(() => li.style.display='none', 400);
             } else {
@@ -535,6 +528,8 @@ window.addEventListener('DOMContentLoaded', () => {
         const diff = now - parseInt(stored);
         if(diff > 24*60*60*1000) {
             document.getElementById('all-chapters').appendChild(li);
+            const oldId = li.id;
+            li.id = 'all-' + oldId.split('-')[1];
             const glowKey = 'absolute-orange-glow-'+li.id;
             localStorage.setItem(glowKey, now);
             li.classList.add('orange-glow');
@@ -545,9 +540,9 @@ window.addEventListener('DOMContentLoaded', () => {
     allUpdatedLis.forEach(li => {
         const glowKey = 'absolute-orange-glow-'+li.id;
         const glowStart = localStorage.getItem(glowKey);
-        if(glowStart) {
+        if(glowStart){
             const diff = now - parseInt(glowStart);
-            if(diff < 24*60*60*1000) {
+            if(diff < 24*60*60*1000){
                 li.classList.add('orange-glow');
                 setTimeout(() => li.classList.remove('orange-glow'), 24*60*60*1000 - diff);
             } else {
@@ -559,7 +554,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     allUpdatedLis.forEach((li,index) => {
         const checkbox = li.querySelector('input[type=checkbox]');
-        if(checkbox) {
+        if(checkbox){
             checkbox.checked = localStorage.getItem('absolute-all-chapter-checked-'+index)==='true';
             li.classList.remove('checked','unchecked');
             li.classList.add(checkbox.checked?'checked':'unchecked');
