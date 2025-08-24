@@ -540,7 +540,7 @@ function filterBySearch() {
     });
 }
 
-// Handle newly moved chapters glow
+// Handle newly moved chapters glow and localStorage states
 window.addEventListener('DOMContentLoaded', () => {
     const now = Date.now();
     const allLis = document.querySelectorAll('#all-chapters li');
@@ -555,10 +555,6 @@ window.addEventListener('DOMContentLoaded', () => {
             checkbox.checked = localStorage.getItem('absolute-all-chapter-checked-'+index)==='true';
             li.classList.remove('checked','unchecked');
             li.classList.add(checkbox.checked?'checked':'unchecked');
-            checkbox.addEventListener('change', ()=>{
-                localStorage.setItem('absolute-all-chapter-checked-'+index, checkbox.checked);
-                updateCounts();
-            });
         }
     });
 
@@ -569,12 +565,34 @@ window.addEventListener('DOMContentLoaded', () => {
             checkbox.checked = localStorage.getItem('absolute-new-chapter-checked-'+index)==='true';
             li.classList.remove('checked','unchecked');
             li.classList.add(checkbox.checked?'checked':'unchecked');
-            checkbox.addEventListener('change', ()=>{
-                localStorage.setItem('absolute-new-chapter-checked-'+index, checkbox.checked);
-                updateCounts();
-            });
         }
     });
+
+    // NEW: instant fade and move on check/uncheck
+    function handleInstantMove(li, prefix, index) {
+        const checkbox = li.querySelector('input[type=checkbox]');
+        if (!checkbox) return;
+        checkbox.addEventListener('change', () => {
+            localStorage.setItem('absolute-' + prefix + '-chapter-checked-' + index, checkbox.checked);
+            li.classList.remove('checked', 'unchecked');
+            li.classList.add(checkbox.checked ? 'checked' : 'unchecked');
+            updateCounts();
+            li.style.transition = 'opacity 0.4s ease';
+            li.style.opacity = 0;
+            setTimeout(() => {
+                const filterMode = localStorage.getItem('absolute-filterMode') || 'all';
+                if ((filterMode === 'read' && !checkbox.checked) || (filterMode === 'unread' && checkbox.checked)) {
+                    li.style.display = 'none';
+                } else {
+                    li.style.display = 'flex';
+                    li.style.opacity = 1;
+                }
+            }, 400);
+        });
+    }
+
+    allLis.forEach((li,index) => handleInstantMove(li, 'all', index));
+    newLis.forEach((li,index) => handleInstantMove(li, 'new', index));
 
     const savedFilter = localStorage.getItem('absolute-filterMode') || 'all';
     filterChapters(savedFilter);
