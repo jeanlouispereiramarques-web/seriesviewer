@@ -2,7 +2,9 @@
 <html><head><title>Series</title>
 <style>
     body { font-family: Arial, sans-serif; background:#000; color:#fff; }
-    .burger { cursor: pointer; margin: 10px; padding: 40px 40px; background: linear-gradient(45deg, #9100ff, #00000094); border-radius: 8px; display: inline-block; font-weight: bold; }
+    .burger, .filter-btn { cursor: pointer; margin: 6px; padding: 14px 18px; background: linear-gradient(45deg, #e525b3, #ed535394); border-radius: 50px; display: inline-block; font-weight: bold; }
+    .filter-bar { margin: 10px; }
+    .filter-btn.active { box-shadow: 0 0 0 3px rgba(255,255,255,0.06); }
     .episodes { display:none; margin-left:20px; margin-top:5px; }
     .episode-item { margin-bottom:10px; display:flex; align-items:center; }
     .download-btn { margin-right:10px; font-size:12px; color:#0f0; text-decoration:underline; cursor:pointer; flex-shrink:0; }
@@ -17,18 +19,152 @@
     .episode-name.unchecked { color: red !important; text-decoration: none !important; }
     </style>
 <script>
-    function toggleMenu(id){var e=document.getElementById(id); e.style.display=(e.style.display==='none')?'block':'none';}
-    function toggleEpisode(id){var e=document.getElementById(id); e.style.display=(e.style.display==='none')?'block':'none';}
-    function makeFullscreen(iframeId){var iframe=document.getElementById(iframeId).querySelector('iframe'); if(iframe.requestFullscreen){iframe.requestFullscreen();}}
-    function toggleCheckbox(cb, spanId) {
+    var currentFilter = 'all';
+
+    function makeFullscreen(iframeId){
+        var iframeContainer=document.getElementById(iframeId);
+        if(!iframeContainer) return;
+        var iframe=iframeContainer.querySelector('iframe');
+        if(iframe && iframe.requestFullscreen){iframe.requestFullscreen();}
+    }
+
+    function toggleEpisode(id){
+        var e=document.getElementById(id);
+        if(!e) return;
+        var isHidden = window.getComputedStyle(e).display === 'none';
+        e.style.display = isHidden ? 'block' : 'none';
+        e.dataset.opened = isHidden ? 'true' : 'false';
+    }
+
+    function toggleCheckbox(cb, spanId, key) {
         var span = document.getElementById(spanId);
         if(cb.checked){
             span.classList.add('checked');
             span.classList.remove('unchecked');
+            localStorage.setItem('episode_' + key, 'checked');
         } else {
             span.classList.remove('checked');
             span.classList.add('unchecked');
+            localStorage.setItem('episode_' + key, 'unchecked');
         }
+        // Re-apply current filter so items appear/disappear immediately
+        applyFilter(currentFilter);
     }
+
+    function restoreCheckboxes() {
+        let validKeys = [];
+
+        document.querySelectorAll('.episode-checkbox').forEach(cb => {
+            let key = cb.getAttribute('data-key');
+            let spanId = cb.getAttribute('data-span');
+            let saved = localStorage.getItem('episode_' + key);
+            let span = document.getElementById(spanId);
+
+            validKeys.push('episode_' + key);
+
+            if(saved === 'checked'){
+                cb.checked = true;
+                if(span){ span.classList.add('checked'); span.classList.remove('unchecked'); }
+            } else {
+                cb.checked = false;
+                if(span){ span.classList.remove('checked'); span.classList.add('unchecked'); }
+            }
+        });
+
+        // Cleanup: remove localStorage entries not in current episodes
+        let allKeys = [];
+        for(let i=0; i<localStorage.length; i++){
+            allKeys.push(localStorage.key(i));
+        }
+        allKeys.forEach(k => {
+            if(k && k.startsWith('episode_') && !validKeys.includes(k)){
+                localStorage.removeItem(k);
+            }
+        });
+
+        applyFilter(currentFilter);
+    }
+
+    function applyFilter(mode){
+        currentFilter = mode;
+        // update active class on global filter buttons
+        ['all','watched','unwatched'].forEach(m => {
+            var b = document.getElementById('filter_' + m);
+            if(b) b.classList.remove('active');
+        });
+        var activeBtn = document.getElementById('filter_' + mode);
+        if(activeBtn) activeBtn.classList.add('active');
+
+        document.querySelectorAll('.episode-item').forEach(li => {
+            var cb = li.querySelector('.episode-checkbox');
+            var show = true;
+            if(mode === 'watched'){
+                show = !!(cb && cb.checked);
+            } else if(mode === 'unwatched'){
+                show = !!(cb && !cb.checked);
+            } else {
+                show = true;
+            }
+
+            li.style.display = show ? 'flex' : 'none';
+
+            // hide or show embed container (next sibling) depending on whether li is shown and if it was opened
+            var next = li.nextElementSibling;
+            if(next && next.classList && next.classList.contains('embed-container')){
+                if(show && next.dataset.opened === 'true'){
+                    next.style.display = 'block';
+                } else {
+                    next.style.display = 'none';
+                }
+            }
+        });
+    }
+
+    function markSeason(seasonDivId, watched){
+        var seasonDiv = document.getElementById(seasonDivId);
+        if(!seasonDiv) return;
+        seasonDiv.querySelectorAll('.episode-checkbox').forEach(cb => {
+            var spanId = cb.getAttribute('data-span');
+            var key = cb.getAttribute('data-key');
+            cb.checked = watched;
+            var span = document.getElementById(spanId);
+            if(watched){
+                if(span){ span.classList.add('checked'); span.classList.remove('unchecked'); }
+                localStorage.setItem('episode_' + key, 'checked');
+            } else {
+                if(span){ span.classList.remove('checked'); span.classList.add('unchecked'); }
+                localStorage.setItem('episode_' + key, 'unchecked');
+            }
+        });
+        applyFilter(currentFilter);
+    }
+
+    function markAll(watched){
+        document.querySelectorAll('.episode-checkbox').forEach(cb => {
+            var spanId = cb.getAttribute('data-span');
+            var key = cb.getAttribute('data-key');
+            cb.checked = watched;
+            var span = document.getElementById(spanId);
+            if(watched){
+                if(span){ span.classList.add('checked'); span.classList.remove('unchecked'); }
+                localStorage.setItem('episode_' + key, 'checked');
+            } else {
+                if(span){ span.classList.remove('checked'); span.classList.add('unchecked'); }
+                localStorage.setItem('episode_' + key, 'unchecked');
+            }
+        });
+        applyFilter(currentFilter);
+    }
+
+    window.onload = restoreCheckboxes;
     </script>
-</head><body><h1>Watson</h1><div class="burger" onclick="toggleMenu('Watson_S1')">S1</div><div class="episodes" id="Watson_S1"><ul><li class="episode-item"><a class="download-btn" href="https://www.uqload.cx/embed-536q203s1we8.html" target="_blank">⬇️ Download</a><input class="episode-checkbox" onclick="toggleCheckbox(this, 'episode_name_Watson_S1_1')" type="checkbox"/><span class="episode-name unchecked" id="episode_name_Watson_S1_1" onclick="toggleEpisode('Watson_S1_1')">Episode 1: Watson S01E01 MULTi 1080p WEB DDP5 1 H264-BraD</span><a class="open-btn" href="https://www.uqload.cx/embed-536q203s1we8.html" target="_blank">🔗 Open</a></li><div class="embed-container" id="Watson_S1_1"><button class="fullscreen-btn" onclick="makeFullscreen('Watson_S1_1')">Fullscreen</button><iframe allowfullscreen="True" src="https://www.uqload.cx/embed-536q203s1we8.html"></iframe></div><li class="episode-item"><a class="download-btn" href="https://www.uqload.cx/embed-gqr8lfa7vwyb.html" target="_blank">⬇️ Download</a><input class="episode-checkbox" onclick="toggleCheckbox(this, 'episode_name_Watson_S1_2')" type="checkbox"/><span class="episode-name unchecked" id="episode_name_Watson_S1_2" onclick="toggleEpisode('Watson_S1_2')">Episode 2: Watson S01E02 MULTi 1080p WEB DDP5 1 H264-BraD</span><a class="open-btn" href="https://www.uqload.cx/embed-gqr8lfa7vwyb.html" target="_blank">🔗 Open</a></li><div class="embed-container" id="Watson_S1_2"><button class="fullscreen-btn" onclick="makeFullscreen('Watson_S1_2')">Fullscreen</button><iframe allowfullscreen="True" src="https://www.uqload.cx/embed-gqr8lfa7vwyb.html"></iframe></div><li class="episode-item"><a class="download-btn" href="https://www.uqload.cx/embed-i2szpwd1lpa3.html" target="_blank">⬇️ Download</a><input class="episode-checkbox" onclick="toggleCheckbox(this, 'episode_name_Watson_S1_3')" type="checkbox"/><span class="episode-name unchecked" id="episode_name_Watson_S1_3" onclick="toggleEpisode('Watson_S1_3')">Episode 3: Watson S01E03 MULTi 1080p WEB DDP5 1 H264-BraD</span><a class="open-btn" href="https://www.uqload.cx/embed-i2szpwd1lpa3.html" target="_blank">🔗 Open</a></li><div class="embed-container" id="Watson_S1_3"><button class="fullscreen-btn" onclick="makeFullscreen('Watson_S1_3')">Fullscreen</button><iframe allowfullscreen="True" src="https://www.uqload.cx/embed-i2szpwd1lpa3.html"></iframe></div><li class="episode-item"><a class="download-btn" href="https://www.uqload.cx/embed-7uf45dynrx9o.html" target="_blank">⬇️ Download</a><input class="episode-checkbox" onclick="toggleCheckbox(this, 'episode_name_Watson_S1_4')" type="checkbox"/><span class="episode-name unchecked" id="episode_name_Watson_S1_4" onclick="toggleEpisode('Watson_S1_4')">Episode 4: Watson S01E04 MULTi 1080p WEB DDP5 1 H264-BraD</span><a class="open-btn" href="https://www.uqload.cx/embed-7uf45dynrx9o.html" target="_blank">🔗 Open</a></li><div class="embed-container" id="Watson_S1_4"><button class="fullscreen-btn" onclick="makeFullscreen('Watson_S1_4')">Fullscreen</button><iframe allowfullscreen="True" src="https://www.uqload.cx/embed-7uf45dynrx9o.html"></iframe></div><li class="episode-item"><a class="download-btn" href="https://www.uqload.cx/embed-uzoldgh84yaq.html" target="_blank">⬇️ Download</a><input class="episode-checkbox" onclick="toggleCheckbox(this, 'episode_name_Watson_S1_5')" type="checkbox"/><span class="episode-name unchecked" id="episode_name_Watson_S1_5" onclick="toggleEpisode('Watson_S1_5')">Episode 5: Watson S01E05 FRENCH 1080p WEB DDP5 1 H264-BraD</span><a class="open-btn" href="https://www.uqload.cx/embed-uzoldgh84yaq.html" target="_blank">🔗 Open</a></li><div class="embed-container" id="Watson_S1_5"><button class="fullscreen-btn" onclick="makeFullscreen('Watson_S1_5')">Fullscreen</button><iframe allowfullscreen="True" src="https://www.uqload.cx/embed-uzoldgh84yaq.html"></iframe></div></ul></div><h1>Criminal Minds</h1><div class="burger" onclick="toggleMenu('Criminal Minds_S18')">S18</div><div class="episodes" id="Criminal Minds_S18"><ul><li class="episode-item"><a class="download-btn" href="https://www.uqload.cx/embed-vgeym52dftjq.html" target="_blank">⬇️ Download</a><input class="episode-checkbox" onclick="toggleCheckbox(this, 'episode_name_Criminal Minds_S18_1')" type="checkbox"/><span class="episode-name unchecked" id="episode_name_Criminal Minds_S18_1" onclick="toggleEpisode('Criminal Minds_S18_1')">Episode 1: Criminal Minds 2005 S18E01 MULTi 1080p WEB H264-FW</span><a class="open-btn" href="https://www.uqload.cx/embed-vgeym52dftjq.html" target="_blank">🔗 Open</a></li><div class="embed-container" id="Criminal Minds_S18_1"><button class="fullscreen-btn" onclick="makeFullscreen('Criminal Minds_S18_1')">Fullscreen</button><iframe allowfullscreen="True" src="https://www.uqload.cx/embed-vgeym52dftjq.html"></iframe></div><li class="episode-item"><a class="download-btn" href="https://www.uqload.cx/embed-ab7ju91n1b0i.html" target="_blank">⬇️ Download</a><input class="episode-checkbox" onclick="toggleCheckbox(this, 'episode_name_Criminal Minds_S18_2')" type="checkbox"/><span class="episode-name unchecked" id="episode_name_Criminal Minds_S18_2" onclick="toggleEpisode('Criminal Minds_S18_2')">Episode 2: Criminal Minds 2005 S18E02 FRENCH 1080p WEB H264-FW</span><a class="open-btn" href="https://www.uqload.cx/embed-ab7ju91n1b0i.html" target="_blank">🔗 Open</a></li><div class="embed-container" id="Criminal Minds_S18_2"><button class="fullscreen-btn" onclick="makeFullscreen('Criminal Minds_S18_2')">Fullscreen</button><iframe allowfullscreen="True" src="https://www.uqload.cx/embed-ab7ju91n1b0i.html"></iframe></div><li class="episode-item"><a class="download-btn" href="https://www.uqload.cx/embed-cwckb6du8jfi.html" target="_blank">⬇️ Download</a><input class="episode-checkbox" onclick="toggleCheckbox(this, 'episode_name_Criminal Minds_S18_3')" type="checkbox"/><span class="episode-name unchecked" id="episode_name_Criminal Minds_S18_3" onclick="toggleEpisode('Criminal Minds_S18_3')">Episode 3: Criminal Minds S18E03 FRENCH 1080p WEB H264-LUCKY</span><a class="open-btn" href="https://www.uqload.cx/embed-cwckb6du8jfi.html" target="_blank">🔗 Open</a></li><div class="embed-container" id="Criminal Minds_S18_3"><button class="fullscreen-btn" onclick="makeFullscreen('Criminal Minds_S18_3')">Fullscreen</button><iframe allowfullscreen="True" src="https://www.uqload.cx/embed-cwckb6du8jfi.html"></iframe></div><li class="episode-item"><a class="download-btn" href="https://www.uqload.cx/embed-zfkwc1f119zi.html" target="_blank">⬇️ Download</a><input class="episode-checkbox" onclick="toggleCheckbox(this, 'episode_name_Criminal Minds_S18_4')" type="checkbox"/><span class="episode-name unchecked" id="episode_name_Criminal Minds_S18_4" onclick="toggleEpisode('Criminal Minds_S18_4')">Episode 4: Criminal Minds 2005 S18E04 MULTi 1080p WEB H264-FW</span><a class="open-btn" href="https://www.uqload.cx/embed-zfkwc1f119zi.html" target="_blank">🔗 Open</a></li><div class="embed-container" id="Criminal Minds_S18_4"><button class="fullscreen-btn" onclick="makeFullscreen('Criminal Minds_S18_4')">Fullscreen</button><iframe allowfullscreen="True" src="https://www.uqload.cx/embed-zfkwc1f119zi.html"></iframe></div><li class="episode-item"><a class="download-btn" href="https://www.uqload.cx/embed-desk9sttz7l1.html" target="_blank">⬇️ Download</a><input class="episode-checkbox" onclick="toggleCheckbox(this, 'episode_name_Criminal Minds_S18_5')" type="checkbox"/><span class="episode-name unchecked" id="episode_name_Criminal Minds_S18_5" onclick="toggleEpisode('Criminal Minds_S18_5')">Episode 5: Criminal Minds 2005 S18E05 MULTi 1080p WEB H264-FW</span><a class="open-btn" href="https://www.uqload.cx/embed-desk9sttz7l1.html" target="_blank">🔗 Open</a></li><div class="embed-container" id="Criminal Minds_S18_5"><button class="fullscreen-btn" onclick="makeFullscreen('Criminal Minds_S18_5')">Fullscreen</button><iframe allowfullscreen="True" src="https://www.uqload.cx/embed-desk9sttz7l1.html"></iframe></div></ul></div><h1>Ncis Origins</h1><div class="burger" onclick="toggleMenu('Ncis Origins_S1')">S1</div><div class="episodes" id="Ncis Origins_S1"><ul><li class="episode-item"><a class="download-btn" href="https://www.uqload.cx/embed-ib4rclzmapu2.html" target="_blank">⬇️ Download</a><input class="episode-checkbox" onclick="toggleCheckbox(this, 'episode_name_Ncis Origins_S1_1')" type="checkbox"/><span class="episode-name unchecked" id="episode_name_Ncis Origins_S1_1" onclick="toggleEpisode('Ncis Origins_S1_1')">Episode 1: NCIS Origins S01E01 MULTi 1080p WEB DDP5 1 H264-BraD</span><a class="open-btn" href="https://www.uqload.cx/embed-ib4rclzmapu2.html" target="_blank">🔗 Open</a></li><div class="embed-container" id="Ncis Origins_S1_1"><button class="fullscreen-btn" onclick="makeFullscreen('Ncis Origins_S1_1')">Fullscreen</button><iframe allowfullscreen="True" src="https://www.uqload.cx/embed-ib4rclzmapu2.html"></iframe></div></ul></div></body></html>
+</head><body>
+<div class="filter-bar">
+<div class="filter-btn" id="filter_all" onclick="applyFilter('all')">All</div>
+<div class="filter-btn" id="filter_watched" onclick="applyFilter('watched')">Watched</div>
+<div class="filter-btn" id="filter_unwatched" onclick="applyFilter('unwatched')">Unwatched</div>
+<div style="display:inline-block; width:20px;"></div>
+<div class="filter-btn" onclick="markAll(true)">Mark All Watched</div>
+<div class="filter-btn" onclick="markAll(false)">Mark All Unwatched</div>
+</div>
+<h1>Watson</h1><div class="burger" onclick="toggleMenu('Watson_S1')">S1</div><div class="burger" onclick="markSeason('Watson_S1', true)">Mark Season Watched</div><div class="burger" onclick="markSeason('Watson_S1', false)">Mark Season Unwatched</div><div class="episodes" id="Watson_S1"><ul><li class="episode-item"><a class="download-btn" href="https://www.uqload.cx/embed-536q203s1we8.html" target="_blank">⬇️ Download</a><input class="episode-checkbox" data-key="Watson_S1_1" data-span="episode_name_Watson_S1_1" onclick="toggleCheckbox(this, 'episode_name_Watson_S1_1', 'Watson_S1_1')" type="checkbox"/><span class="episode-name unchecked" id="episode_name_Watson_S1_1" onclick="toggleEpisode('Watson_S1_1')">Episode 1: Watson S01E01 MULTi 1080p WEB DDP5 1 H264-BraD</span><a class="open-btn" href="https://www.uqload.cx/embed-536q203s1we8.html" target="_blank">🔗 Open</a></li><div class="embed-container" data-opened="false" id="Watson_S1_1"><button class="fullscreen-btn" onclick="makeFullscreen('Watson_S1_1')">Fullscreen</button><iframe allowfullscreen="True" src="https://www.uqload.cx/embed-536q203s1we8.html"></iframe></div><li class="episode-item"><a class="download-btn" href="https://www.uqload.cx/embed-gqr8lfa7vwyb.html" target="_blank">⬇️ Download</a><input class="episode-checkbox" data-key="Watson_S1_2" data-span="episode_name_Watson_S1_2" onclick="toggleCheckbox(this, 'episode_name_Watson_S1_2', 'Watson_S1_2')" type="checkbox"/><span class="episode-name unchecked" id="episode_name_Watson_S1_2" onclick="toggleEpisode('Watson_S1_2')">Episode 2: Watson S01E02 MULTi 1080p WEB DDP5 1 H264-BraD</span><a class="open-btn" href="https://www.uqload.cx/embed-gqr8lfa7vwyb.html" target="_blank">🔗 Open</a></li><div class="embed-container" data-opened="false" id="Watson_S1_2"><button class="fullscreen-btn" onclick="makeFullscreen('Watson_S1_2')">Fullscreen</button><iframe allowfullscreen="True" src="https://www.uqload.cx/embed-gqr8lfa7vwyb.html"></iframe></div><li class="episode-item"><a class="download-btn" href="https://www.uqload.cx/embed-i2szpwd1lpa3.html" target="_blank">⬇️ Download</a><input class="episode-checkbox" data-key="Watson_S1_3" data-span="episode_name_Watson_S1_3" onclick="toggleCheckbox(this, 'episode_name_Watson_S1_3', 'Watson_S1_3')" type="checkbox"/><span class="episode-name unchecked" id="episode_name_Watson_S1_3" onclick="toggleEpisode('Watson_S1_3')">Episode 3: Watson S01E03 MULTi 1080p WEB DDP5 1 H264-BraD</span><a class="open-btn" href="https://www.uqload.cx/embed-i2szpwd1lpa3.html" target="_blank">🔗 Open</a></li><div class="embed-container" data-opened="false" id="Watson_S1_3"><button class="fullscreen-btn" onclick="makeFullscreen('Watson_S1_3')">Fullscreen</button><iframe allowfullscreen="True" src="https://www.uqload.cx/embed-i2szpwd1lpa3.html"></iframe></div><li class="episode-item"><a class="download-btn" href="https://www.uqload.cx/embed-7uf45dynrx9o.html" target="_blank">⬇️ Download</a><input class="episode-checkbox" data-key="Watson_S1_4" data-span="episode_name_Watson_S1_4" onclick="toggleCheckbox(this, 'episode_name_Watson_S1_4', 'Watson_S1_4')" type="checkbox"/><span class="episode-name unchecked" id="episode_name_Watson_S1_4" onclick="toggleEpisode('Watson_S1_4')">Episode 4: Watson S01E04 MULTi 1080p WEB DDP5 1 H264-BraD</span><a class="open-btn" href="https://www.uqload.cx/embed-7uf45dynrx9o.html" target="_blank">🔗 Open</a></li><div class="embed-container" data-opened="false" id="Watson_S1_4"><button class="fullscreen-btn" onclick="makeFullscreen('Watson_S1_4')">Fullscreen</button><iframe allowfullscreen="True" src="https://www.uqload.cx/embed-7uf45dynrx9o.html"></iframe></div><li class="episode-item"><a class="download-btn" href="https://www.uqload.cx/embed-uzoldgh84yaq.html" target="_blank">⬇️ Download</a><input class="episode-checkbox" data-key="Watson_S1_5" data-span="episode_name_Watson_S1_5" onclick="toggleCheckbox(this, 'episode_name_Watson_S1_5', 'Watson_S1_5')" type="checkbox"/><span class="episode-name unchecked" id="episode_name_Watson_S1_5" onclick="toggleEpisode('Watson_S1_5')">Episode 5: Watson S01E05 FRENCH 1080p WEB DDP5 1 H264-BraD</span><a class="open-btn" href="https://www.uqload.cx/embed-uzoldgh84yaq.html" target="_blank">🔗 Open</a></li><div class="embed-container" data-opened="false" id="Watson_S1_5"><button class="fullscreen-btn" onclick="makeFullscreen('Watson_S1_5')">Fullscreen</button><iframe allowfullscreen="True" src="https://www.uqload.cx/embed-uzoldgh84yaq.html"></iframe></div></ul></div><h1>Criminal Minds</h1><div class="burger" onclick="toggleMenu('Criminal Minds_S18')">S18</div><div class="burger" onclick="markSeason('Criminal Minds_S18', true)">Mark Season Watched</div><div class="burger" onclick="markSeason('Criminal Minds_S18', false)">Mark Season Unwatched</div><div class="episodes" id="Criminal Minds_S18"><ul><li class="episode-item"><a class="download-btn" href="https://www.uqload.cx/embed-vgeym52dftjq.html" target="_blank">⬇️ Download</a><input class="episode-checkbox" data-key="Criminal Minds_S18_1" data-span="episode_name_Criminal Minds_S18_1" onclick="toggleCheckbox(this, 'episode_name_Criminal Minds_S18_1', 'Criminal Minds_S18_1')" type="checkbox"/><span class="episode-name unchecked" id="episode_name_Criminal Minds_S18_1" onclick="toggleEpisode('Criminal Minds_S18_1')">Episode 1: Criminal Minds 2005 S18E01 MULTi 1080p WEB H264-FW</span><a class="open-btn" href="https://www.uqload.cx/embed-vgeym52dftjq.html" target="_blank">🔗 Open</a></li><div class="embed-container" data-opened="false" id="Criminal Minds_S18_1"><button class="fullscreen-btn" onclick="makeFullscreen('Criminal Minds_S18_1')">Fullscreen</button><iframe allowfullscreen="True" src="https://www.uqload.cx/embed-vgeym52dftjq.html"></iframe></div><li class="episode-item"><a class="download-btn" href="https://www.uqload.cx/embed-ab7ju91n1b0i.html" target="_blank">⬇️ Download</a><input class="episode-checkbox" data-key="Criminal Minds_S18_2" data-span="episode_name_Criminal Minds_S18_2" onclick="toggleCheckbox(this, 'episode_name_Criminal Minds_S18_2', 'Criminal Minds_S18_2')" type="checkbox"/><span class="episode-name unchecked" id="episode_name_Criminal Minds_S18_2" onclick="toggleEpisode('Criminal Minds_S18_2')">Episode 2: Criminal Minds 2005 S18E02 FRENCH 1080p WEB H264-FW</span><a class="open-btn" href="https://www.uqload.cx/embed-ab7ju91n1b0i.html" target="_blank">🔗 Open</a></li><div class="embed-container" data-opened="false" id="Criminal Minds_S18_2"><button class="fullscreen-btn" onclick="makeFullscreen('Criminal Minds_S18_2')">Fullscreen</button><iframe allowfullscreen="True" src="https://www.uqload.cx/embed-ab7ju91n1b0i.html"></iframe></div><li class="episode-item"><a class="download-btn" href="https://www.uqload.cx/embed-cwckb6du8jfi.html" target="_blank">⬇️ Download</a><input class="episode-checkbox" data-key="Criminal Minds_S18_3" data-span="episode_name_Criminal Minds_S18_3" onclick="toggleCheckbox(this, 'episode_name_Criminal Minds_S18_3', 'Criminal Minds_S18_3')" type="checkbox"/><span class="episode-name unchecked" id="episode_name_Criminal Minds_S18_3" onclick="toggleEpisode('Criminal Minds_S18_3')">Episode 3: Criminal Minds S18E03 FRENCH 1080p WEB H264-LUCKY</span><a class="open-btn" href="https://www.uqload.cx/embed-cwckb6du8jfi.html" target="_blank">🔗 Open</a></li><div class="embed-container" data-opened="false" id="Criminal Minds_S18_3"><button class="fullscreen-btn" onclick="makeFullscreen('Criminal Minds_S18_3')">Fullscreen</button><iframe allowfullscreen="True" src="https://www.uqload.cx/embed-cwckb6du8jfi.html"></iframe></div><li class="episode-item"><a class="download-btn" href="https://www.uqload.cx/embed-zfkwc1f119zi.html" target="_blank">⬇️ Download</a><input class="episode-checkbox" data-key="Criminal Minds_S18_4" data-span="episode_name_Criminal Minds_S18_4" onclick="toggleCheckbox(this, 'episode_name_Criminal Minds_S18_4', 'Criminal Minds_S18_4')" type="checkbox"/><span class="episode-name unchecked" id="episode_name_Criminal Minds_S18_4" onclick="toggleEpisode('Criminal Minds_S18_4')">Episode 4: Criminal Minds 2005 S18E04 MULTi 1080p WEB H264-FW</span><a class="open-btn" href="https://www.uqload.cx/embed-zfkwc1f119zi.html" target="_blank">🔗 Open</a></li><div class="embed-container" data-opened="false" id="Criminal Minds_S18_4"><button class="fullscreen-btn" onclick="makeFullscreen('Criminal Minds_S18_4')">Fullscreen</button><iframe allowfullscreen="True" src="https://www.uqload.cx/embed-zfkwc1f119zi.html"></iframe></div><li class="episode-item"><a class="download-btn" href="https://www.uqload.cx/embed-desk9sttz7l1.html" target="_blank">⬇️ Download</a><input class="episode-checkbox" data-key="Criminal Minds_S18_5" data-span="episode_name_Criminal Minds_S18_5" onclick="toggleCheckbox(this, 'episode_name_Criminal Minds_S18_5', 'Criminal Minds_S18_5')" type="checkbox"/><span class="episode-name unchecked" id="episode_name_Criminal Minds_S18_5" onclick="toggleEpisode('Criminal Minds_S18_5')">Episode 5: Criminal Minds 2005 S18E05 MULTi 1080p WEB H264-FW</span><a class="open-btn" href="https://www.uqload.cx/embed-desk9sttz7l1.html" target="_blank">🔗 Open</a></li><div class="embed-container" data-opened="false" id="Criminal Minds_S18_5"><button class="fullscreen-btn" onclick="makeFullscreen('Criminal Minds_S18_5')">Fullscreen</button><iframe allowfullscreen="True" src="https://www.uqload.cx/embed-desk9sttz7l1.html"></iframe></div></ul></div><h1>Ncis Origins</h1><div class="burger" onclick="toggleMenu('Ncis Origins_S1')">S1</div><div class="burger" onclick="markSeason('Ncis Origins_S1', true)">Mark Season Watched</div><div class="burger" onclick="markSeason('Ncis Origins_S1', false)">Mark Season Unwatched</div><div class="episodes" id="Ncis Origins_S1"><ul><li class="episode-item"><a class="download-btn" href="https://www.uqload.cx/embed-ib4rclzmapu2.html" target="_blank">⬇️ Download</a><input class="episode-checkbox" data-key="Ncis Origins_S1_1" data-span="episode_name_Ncis Origins_S1_1" onclick="toggleCheckbox(this, 'episode_name_Ncis Origins_S1_1', 'Ncis Origins_S1_1')" type="checkbox"/><span class="episode-name unchecked" id="episode_name_Ncis Origins_S1_1" onclick="toggleEpisode('Ncis Origins_S1_1')">Episode 1: NCIS Origins S01E01 MULTi 1080p WEB DDP5 1 H264-BraD</span><a class="open-btn" href="https://www.uqload.cx/embed-ib4rclzmapu2.html" target="_blank">🔗 Open</a></li><div class="embed-container" data-opened="false" id="Ncis Origins_S1_1"><button class="fullscreen-btn" onclick="makeFullscreen('Ncis Origins_S1_1')">Fullscreen</button><iframe allowfullscreen="True" src="https://www.uqload.cx/embed-ib4rclzmapu2.html"></iframe></div></ul></div></body></html>
